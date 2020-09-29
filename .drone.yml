@@ -1,0 +1,78 @@
+######################################################################
+# Build
+
+kind: pipeline
+type: docker
+name: build
+
+trigger:
+  event:
+  - pull_request
+  - tag
+
+workspace:
+  base: /go/src
+  path: ${DRONE_REPO_NAME#go-}
+
+environment:
+  MODULE: ${DRONE_REPO_NAME#go-}
+
+steps:
+
+  - name: watermark
+    image: com.gft.tsbo.dockercourse.infrastructure.drone-util:latest
+    pull: never
+
+    commands:
+      - cd /go/src
+      - echo "date   '$(date)'" > build.txt
+      - echo "repo   '${DRONE_REMOTE_URL}'" >> build.txt
+      - echo "ref    '${DRONE_COMMIT_REF}'" >> build.txt
+      - echo "commit '${DRONE_COMMIT_SHA}'" >> build.txt
+      - cd "$${MODULE}"
+      - git log --cherry-mark --full-history --simplify-merges --date-order --show-notes  --date=local --graph --all --color=never --oneline --decorate=full > ../changelog.txt
+      - cat ../build.txt
+      - cat ../changelog.txt
+
+  - name: common
+    image: com.gft.tsbo.dockercourse.infrastructure.drone-util:latest
+    pull: never
+    commands:
+      - cd /go/src
+      - git clone --recurse-submodules https://gitea.dockercourse.gft.com:3000/dockerdemo/go-common /go/src/common
+
+  - name: build
+    image: golang
+    commands:
+      - cd /go/src
+      - go mod init com.gft.tsbo-training.src.go
+      - mkdir bin
+      - go build -o "bin/$${MODULE}" "$${MODULE}/cmd/main.go"
+
+  - name: package
+    when:
+      event:
+      - tag
+      ref:
+      - refs/tags/release/*
+    image: com.gft.tsbo.dockercourse.infrastructure.drone-util:latest
+    pull: never
+    commands:
+      - cd /go/src
+      - zip -j "$${MODULE}.zip" "bin/$${MODULE}" build.txt changelog.txt
+
+  - name: gitea-release
+    when:
+      event:
+      - tag
+      ref:
+      - refs/tags/release/*
+    image: com.gft.tsbo.dockercourse.infrastructure.drone-plugin-gitea-release:latest
+    pull: never
+    settings:
+      api_key:
+        from_secret: drone_api_key
+      base_url: https://gitea.dockercourse.gft.com:3000
+      title: Release ${DRONE_COMMIT_REF}
+      files: /go/src/${DRONE_REPO_NAME#go-}.zip
+
