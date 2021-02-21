@@ -18,12 +18,10 @@ import (
 //Measured Encapsulates the ms-measure data
 type Measured struct {
 	microservice.MicroService
-	// *HeaderConfiguration
 	*UpstreamConfiguration
 	*DeviceConfiguration
 
 	device.Device
-	// Headers   []Header
 	starttime time.Time
 	HasValue  bool
 	Mutex     *sync.Mutex

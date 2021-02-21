@@ -44,12 +44,6 @@ func main() {
 			}
 
 			ms.SetRequestHeaders("", r, nil)
-			// r.Header.Set("cid", ms.GetName())
-			// r.Header.Set("version", ms.GetVersion())
-
-			// for _, header := range ms.Headers {
-			// 	r.Header.Set(header.Key, header.Value)
-			// }
 
 			res, err := ms.HTTPClient.Do(r)
 			if err != nil {
