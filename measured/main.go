@@ -18,12 +18,12 @@ import (
 //Measured Encapsulates the ms-measure data
 type Measured struct {
 	microservice.MicroService
-	*HeaderConfiguration
+	// *HeaderConfiguration
 	*UpstreamConfiguration
 	*DeviceConfiguration
 
 	device.Device
-	Headers   []Header
+	// Headers   []Header
 	starttime time.Time
 	HasValue  bool
 	Mutex     *sync.Mutex
@@ -61,9 +61,9 @@ func InitFromArgs(ms *Measured, args []string, flagset *flag.FlagSet) {
 	ms.Mutex = &sync.Mutex{}
 	ms.Condition = sync.NewCond(ms.Mutex)
 
-	for _, line := range ms.HeaderStrings {
-		h := HeaderFromString(line)
-		ms.Headers = append(ms.Headers, h)
-	}
+	// for _, line := range ms.HeaderStrings {
+	// 	h := HeaderFromString(line)
+	// 	ms.Headers = append(ms.Headers, h)
+	// }
 
 }

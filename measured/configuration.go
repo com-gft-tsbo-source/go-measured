@@ -10,18 +10,18 @@ import (
 	"com.gft.tsbo-training.src.go/common/ms-framework/microservice"
 )
 
-type deviceHeaders []string
+// type deviceHeaders []string
 
-func (cs *deviceHeaders) String() string { return "" }
-func (cs *deviceHeaders) Set(value string) error {
-	*cs = append(*cs, value)
-	return nil
-}
+// func (cs *deviceHeaders) String() string { return "" }
+// func (cs *deviceHeaders) Set(value string) error {
+// 	*cs = append(*cs, value)
+// 	return nil
+// }
 
-// HeaderConfiguration ...
-type HeaderConfiguration struct {
-	HeaderStrings []string `json:"headers"`
-}
+// // HeaderConfiguration ...
+// type HeaderConfiguration struct {
+// 	HeaderStrings []string `json:"headers"`
+// }
 
 // UpstreamConfiguration ...
 type UpstreamConfiguration struct {
@@ -48,7 +48,7 @@ type IDeviceConfiguration interface {
 // Configuration ...
 type Configuration struct {
 	microservice.Configuration
-	HeaderConfiguration
+	// HeaderConfiguration
 	UpstreamConfiguration
 	DeviceConfiguration
 	Interval int
@@ -74,13 +74,13 @@ func (cfg DeviceConfiguration) GetDeviceAddress() string { return cfg.DeviceAddr
 
 // InitConfigurationFromArgs ...
 func InitConfigurationFromArgs(cfg *Configuration, args []string, flagset *flag.FlagSet) {
-	var dhCli deviceHeaders
+	// var dhCli deviceHeaders
 
 	if flagset == nil {
 		flagset = flag.NewFlagSet("measured", flag.PanicOnError)
 	}
 
-	flagset.Var(&dhCli, "header", "Device headers")
+	// flagset.Var(&dhCli, "header", "Device headers")
 	pupstream := flagset.String("upstream", "", "Name of the service.")
 	pdeviceType := flagset.String("type", "", "Type of device ('thermometer' or 'hygrometer').")
 	pDeviceAddress := flagset.String("address", "", "Address of the device.")
@@ -97,9 +97,9 @@ func InitConfigurationFromArgs(cfg *Configuration, args []string, flagset *flag.
 		}
 	}
 
-	if len(dhCli) > 0 {
-		cfg.HeaderStrings = dhCli
-	}
+	// if len(dhCli) > 0 {
+	// 	cfg.HeaderStrings = dhCli
+	// }
 
 	if len(*pupstream) > 0 {
 		cfg.Upstream = *pupstream
