@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"com.gft.tsbo-training.src.go/common/ms-framework/microservice"
+	"github.com/com-gft-tsbo-source/go-common/ms-framework/microservice"
 )
 
 // type deviceHeaders []string

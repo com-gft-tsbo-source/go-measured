@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"com.gft.tsbo-training.src.go/common/device"
-	"com.gft.tsbo-training.src.go/common/ms-framework/microservice"
+	"github.com/com-gft-tsbo-source/go-common/device"
+	"github.com/com-gft-tsbo-source/go-common/ms-framework/microservice"
 )
 
 // ###########################################################################
@@ -39,16 +39,16 @@ func InitFromArgs(ms *Measured, args []string, flagset *flag.FlagSet) {
 	}
 
 	InitConfigurationFromArgs(&cfg, args, flagset)
-	ms.HeaderConfiguration = &cfg.HeaderConfiguration
+//	ms.HeaderConfiguration = &cfg.HeaderConfiguration
 	ms.UpstreamConfiguration = &cfg.UpstreamConfiguration
 	ms.DeviceConfiguration = &cfg.DeviceConfiguration
 
 	microservice.Init(&ms.MicroService, &cfg.Configuration, nil)
 
 	if cfg.GetDeviceType() == "thermometer" {
-		device.InitThermometer(&ms.Device, cfg.GetDeviceAddress(), -1, -1, cfg.Interval)
+		device.InitThermometer(&ms.Device, cfg.GetDeviceAddress(), 400, 300, -1, 50)
 	} else if cfg.DeviceType == "hygrometer" {
-		device.InitHygrometer(&ms.Device, cfg.GetDeviceAddress(), -1, -1, cfg.Interval)
+		device.InitHygrometer(&ms.Device, cfg.GetDeviceAddress(), 9400, 500, -1, 100)
 	} else {
 		flagset.Usage()
 		panic("Error: Wrong device! Use 'thermometer' or 'hygrometer'.")

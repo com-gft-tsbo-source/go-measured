@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"com.gft.tsbo-training.src.go/common/device/implementation/devicevalue"
-	"com.gft.tsbo-training.src.go/measured/measured"
+	"github.com/com-gft-tsbo-source/go-common/device/implementation/devicevalue"
+	"github.com/com-gft-tsbo-source/go-measured/measured"
 )
 
 // ###########################################################################
