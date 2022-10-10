@@ -23,7 +23,7 @@ type MeasurePut struct {
 
 // InitMeasurePut Constructor of a response of ms-measure
 func InitMeasurePut(r *MeasurePut, status string, ms *Measured) {
-	microservice.InitResponseFromMicroService(&r.Response, ms, status)
+	microservice.InitResponseFromMicroService(&r.Response, ms, 200, status)
 	devicedescriptor.InitFromDeviceDescriptor(&r.DeviceDescriptor, &ms.Device)
 	ms.FillDeviceValue(&r.DeviceValue)
 }
